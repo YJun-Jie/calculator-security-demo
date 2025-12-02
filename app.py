@@ -1,5 +1,6 @@
 # Simple Flask Calculator Application
 from flask import Flask, render_template, request, jsonify
+import os
 
 app = Flask(__name__)
 
@@ -37,4 +38,5 @@ def calculate():
 
 if __name__ == '__main__':
     # Note: debug=False in production
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    debug = os.environ.get("FLASK_DEBUG", "False").lower() in ("1", "true", "yes")
+    app.run(host='0.0.0.0', port=5000, debug=debug)
