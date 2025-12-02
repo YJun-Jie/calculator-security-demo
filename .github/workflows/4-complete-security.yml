@@ -110,8 +110,14 @@ jobs:
       - name: Test application starts
         run: |
           python app.py &
-          sleep 5
-          curl -f http://localhost:5000 || exit 1
+          for i in {1..10}; do
+            sleep 1
+            curl -f http://localhost:5000 && break
+            if [ "$i" -eq 10 ]; then
+              echo "Server did not start in time"
+              exit 1
+            fi
+          done
           echo "✅ Application builds and runs successfully"
 
   # JOB 4: DAST - Dynamic Application Testing
